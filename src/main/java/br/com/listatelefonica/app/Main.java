@@ -50,6 +50,10 @@ public class Main {
                 atualizarContato();
             }
 
+            case 5 ->{
+                deletarDados();
+            }
+
             case 6 ->{
                 sair = true;
                 break;
@@ -145,7 +149,7 @@ public class Main {
         List<Integer> idContatos = new ArrayList<>();
 
         try{
-            contatos = contatoDao.listarContatos();
+            contatos = ContatoDAO.listarContatos();
             idContatos = listagem(contatos);
 
         } catch (SQLException e){
@@ -158,9 +162,10 @@ public class Main {
         input.nextLine();
 
         if(idContatos.contains(idDigitado)){
-
+            inserirDados(2, idDigitado);
         } else {
-
+            System.out.println("Digite outro contato que esteja na lista.");
+            atualizarContato();
         }
     }
 
@@ -207,6 +212,39 @@ public class Main {
             }
 
         }
+
+    }
+
+    public static void deletarDados(){
+        var contatoDao = new ContatoDAO();
+
+        List<Contato> contatos = new ArrayList<>();
+        List<Integer> idContatos = new ArrayList<>();
+
+        System.out.println("Digite o id do contato que queira deletar: ");
+        int id = input.nextInt();
+        input.nextLine();
+
+        try{
+            contatos = contatoDao.listarContatos();
+            idContatos = listagem(contatos);
+
+            if(idContatos.contains(id)){
+                contatoDao.deletarContato(id);
+            }
+            else{
+                System.out.println("Digite outro contato que esteja na lista.");
+                deletarDados();
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro de conexão com o banco de dados.");
+            e.printStackTrace();
+        }
+
+
+
+
     }
 
 }

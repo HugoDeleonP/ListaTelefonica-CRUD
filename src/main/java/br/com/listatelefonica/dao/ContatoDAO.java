@@ -86,7 +86,7 @@ public class ContatoDAO {
         String query = """
                 UPDATE contato
                 SET nome = ?, telefone = ?, email = ?, observacao = ?
-                WHERE id LIKE ?;
+                WHERE id = ?;
                 """;
 
         try(Connection conn = ConnectionFactory.conectar();
@@ -100,6 +100,22 @@ public class ContatoDAO {
             stmt.executeUpdate();
 
             System.out.println("Contato atualizado com sucesso!");
+        }
+    }
+
+    public static void deletarContato(int id) throws SQLException{
+        String query = """
+                DELETE FROM contato
+                WHERE id = ?;
+                """;
+
+        try(Connection conn = ConnectionFactory.conectar();
+            PreparedStatement stmt = conn.prepareStatement(query)){
+
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+
+            System.out.println("Contato deletado com sucesso!");
         }
     }
 }
